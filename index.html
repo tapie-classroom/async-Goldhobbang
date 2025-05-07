@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class ="container">
+    <h1>용산의 날씨~</h1>
+    <p>온도 : <span id = "temp">도</span></p>
+    <p>습도 : <span id = "water">%</span></p>
+    <p>풍속 : <span id = "wind">m/s</span></p>
+    <p>날씨 : <img id = "weather"></p>
+    </div>
+    <script>
+        const TempatureELEMENT = document.getElementById('temp')
+        const SepdoELEMENT = document.getElementById('water')
+        const WindELEMENT = document.getElementById('wind')
+        const WeatherELEMENT = document.getElementById('weather')
+        
+        fetch('https://api.openweathermap.org/data/3.0/onecall?lat=37.54&lon=126.96&appid=1678d5fbe5655c5df4baca85f98cc3ed')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            const icon = data.current.weather[0].icon;
+            const weatherCondition = data.current.weather[0].main;
+            const temperature = data.current.temp - 273.15;  
+            const humidity = data.current.humidity;  
+            const wind = data.current.wind_speed * 4;
+
+            TempatureELEMENT.innerText = `${temperature.toFixed(2)}`;
+            SepdoELEMENT.innerText = `${humidity}`;
+            WindELEMENT.innerText = `${wind.toFixed(2)}`;
+            WeatherELEMENT.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+        })
+        .catch(error =>{
+            console.error('데이터를 가져오는 중 오류 발생: ', error);
+        });
+    </script>
+</body>
+</html>
